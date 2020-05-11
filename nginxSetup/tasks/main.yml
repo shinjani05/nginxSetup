@@ -1,0 +1,13 @@
+---
+- name: install packages
+  include_tasks: "debian.yml"
+  when: ansible_facts['os_family'] == "Debian"
+- name: Modify the index file
+  template: 
+    src: "index.nginx-debian.html.j2" 
+    dest: "{{ index_file_path }}"
+  when: ansible_host in groups['mysql-master']
+  notify: 
+   - restart mysql
+
+
